@@ -1,7 +1,10 @@
 import { useState } from "react";
-import Button from "./components/button";
+
 import CodePegBoard from "./components/CodePegBoard";
 import KeyPegBoard from "./components/KeyPegBoard";
+import NewGameButton from "./components/NewGameButton";
+import SuitButtonsRow from "./components/SuitButtonsRow";
+import Button from "./components/button";
 
 function App() {
   // console.log("render");
@@ -21,12 +24,15 @@ function App() {
 
   return (
     <>
-      <h1>SKOČKO QUIZ GAME</h1>
-      <div className="flex">
+      <h1 className="text-2xl font-medium font-serif tracking-widest text-slate-200 mb-3">SKOČKO QUIZ GAME</h1>
+      <NewGameButton />
+      <div className="flex mb-5">
         <CodePegBoard />
         <KeyPegBoard />
       </div>
-
+      <SuitButtonsRow />
+      <Button text={'CHECK RESULT'} />
+      <Button text={'UNDO SYMBOL'}/>
       {/* <Button naKlik={getSecret} title={"Ima titla"} />
       <p>Kliknuto {counter} puta</p>
       <p>Tajna poruka : {secret}</p> */}

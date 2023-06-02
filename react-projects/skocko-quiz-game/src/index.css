@@ -1,6 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+    @apply p-0 m-0 box-border no-underline
+}
+
+html {
+    @apply h-full
+}
+
 body {
-    @apply w-full h-screen bg-gradient-to-br from-blue-900 to-blue-400
+    @apply h-full bg-gradient-to-br from-blue-900 to-blue-400 
+}
+
+#root {
+    @apply flex flex-col items-center justify-center h-full max-w-screen-lg mx-auto
 }

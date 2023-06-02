@@ -1,8 +1,8 @@
 import React from 'react'
 
-const KeyPeg = () => {
+const KeyPeg = ({dot}) => {
   return (
-    <div className='h-12 w-12 bg-slate-300 rounded-full'></div>
+    <div className='h-10 w-10 bg-slate-200 rounded-full flex justify-center items-center -z-10'>{dot}</div>
   )
 }
 
