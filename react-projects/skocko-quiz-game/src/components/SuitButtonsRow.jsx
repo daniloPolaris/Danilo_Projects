@@ -7,15 +7,15 @@ import HeartSuit from './HeartSuit'
 import DiamondSuit from './DiamondSuit'
 import SkockoSuit from './SkockoSuit'
 
-const SuitButtonsRow = () => {
+const SuitButtonsRow = ({pushSuit}) => {
   return (
     <div className='flex gap-5 mb-6'>
-        <SuitButton suit={<StarSuit/>} />
-        <SuitButton suit={<ClubSuit/>} />
-        <SuitButton suit={<SpadeSuit/>}/>
-        <SuitButton suit={<HeartSuit/>}/>
-        <SuitButton suit={<DiamondSuit/>}/>
-        <SuitButton suit={<SkockoSuit/>}/>
+        <SuitButton suit={<StarSuit/>} pushSuit={() => pushSuit(<StarSuit/>)} />
+        <SuitButton suit={<ClubSuit/>} pushSuit={() => pushSuit(<ClubSuit />)} />
+        <SuitButton suit={<SpadeSuit/>} pushSuit={() => pushSuit(<SpadeSuit/>)} />
+        <SuitButton suit={<HeartSuit/>} pushSuit={() => pushSuit(<HeartSuit/>)} />
+        <SuitButton suit={<DiamondSuit/>} pushSuit={() => pushSuit(<DiamondSuit/>)} />
+        <SuitButton suit={<SkockoSuit/>} pushSuit={() => pushSuit(<SkockoSuit/>)} />
     </div>
   )
 }
