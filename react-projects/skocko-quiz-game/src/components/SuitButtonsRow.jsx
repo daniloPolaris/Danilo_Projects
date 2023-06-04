@@ -10,12 +10,12 @@ import SkockoSuit from './SkockoSuit'
 const SuitButtonsRow = ({pushSuit}) => {
   return (
     <div className='flex gap-5 mb-6'>
-        <SuitButton suit={<StarSuit/>} pushSuit={() => pushSuit(<StarSuit/>)} />
-        <SuitButton suit={<ClubSuit/>} pushSuit={() => pushSuit(<ClubSuit />)} />
-        <SuitButton suit={<SpadeSuit/>} pushSuit={() => pushSuit(<SpadeSuit/>)} />
-        <SuitButton suit={<HeartSuit/>} pushSuit={() => pushSuit(<HeartSuit/>)} />
-        <SuitButton suit={<DiamondSuit/>} pushSuit={() => pushSuit(<DiamondSuit/>)} />
-        <SuitButton suit={<SkockoSuit/>} pushSuit={() => pushSuit(<SkockoSuit/>)} />
+        <SuitButton suit={<StarSuit/>} pushSuit={() => pushSuit(<StarSuit value={"StarSuit"}/>)} />
+        <SuitButton suit={<ClubSuit/>} pushSuit={() => pushSuit(<ClubSuit value={"ClubSuit"}/>)} />
+        <SuitButton suit={<SpadeSuit/>} pushSuit={() => pushSuit(<SpadeSuit value={"SpadeSuit"}/>)} />
+        <SuitButton suit={<HeartSuit/>} pushSuit={() => pushSuit(<HeartSuit value={"HeartSuit"}/>)} />
+        <SuitButton suit={<DiamondSuit/>} pushSuit={() => pushSuit(<DiamondSuit value={"DiamondSuit"}/>)} />
+        <SuitButton suit={<SkockoSuit/>} pushSuit={() => pushSuit(<SkockoSuit value={"SkockoSuit"}/>)} />
     </div>
   )
 }
