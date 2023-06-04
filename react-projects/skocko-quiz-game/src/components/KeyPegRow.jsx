@@ -1,15 +1,13 @@
 import React from 'react'
 import KeyPeg from './KeyPeg'
-import RedDot from './RedDot'
-import YellowDot from './YellowDot'
 
-const KeyPegRow = () => {
+const KeyPegRow = ({dots}) => {
   return (
     <div className='flex gap-2 justify-center items-center'>
-        <KeyPeg dot={<RedDot/>}/>
-        <KeyPeg dot={<YellowDot/>}/>
-        <KeyPeg/>
-        <KeyPeg/>
+        <KeyPeg dot={Array.isArray(dots) && dots[0]}/>
+        <KeyPeg dot={Array.isArray(dots) && dots[1]}/>
+        <KeyPeg dot={Array.isArray(dots) && dots[2]}/>
+        <KeyPeg dot={Array.isArray(dots) && dots[3]}/>
     </div>
   )
 }

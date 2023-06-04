@@ -1,10 +1,10 @@
 import React from 'react'
 import KeyPegRow from './KeyPegRow'
 
-const KeyPegBoard = () => {
+const KeyPegBoard = ({dots}) => {
   return (
     <div className='flex flex-col gap-3 pt-1 pl-3'>
-        <KeyPegRow/>
+        <KeyPegRow dots={dots}/>
         <KeyPegRow/>
         <KeyPegRow/>
         <KeyPegRow/>

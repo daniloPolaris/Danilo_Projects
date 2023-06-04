@@ -12,6 +12,9 @@ import HeartSuit from "./components/HeartSuit";
 import DiamondSuit from "./components/DiamondSuit";
 import SkockoSuit from "./components/SkockoSuit";
 
+import RedDot from "./components/RedDot";
+import YellowDot from "./components/YellowDot";
+
 function App() {
   const [secretCode, setSecretCode] = useState([]);
 
@@ -80,11 +83,13 @@ function App() {
   //   console.log('Suit Matches:', suitMatches);
   // };
 
+  const [dots, setDots] = useState([]);
+
   const checkResult = () => {
     let exactMatches = 0;
     let suitMatches = 0;
-    const guessArray = selectedSuits.map(item => item.props.value);
-    const answerArray = secretCode.map(item => item.props.value);
+    const guessArray = selectedSuits.map((item) => item.props.value);
+    const answerArray = secretCode.map((item) => item.props.value);
 
     for (let i = 0; i < 4; i++) {
       if (guessArray[i] === answerArray[i]) {
@@ -99,8 +104,20 @@ function App() {
         }
       }
     }
+    const redDotMatches = exactMatches;
     const yellowDotMatches = suitMatches - exactMatches;
-    console.log(exactMatches, yellowDotMatches);
+    console.log(redDotMatches, yellowDotMatches);
+
+    const dotsArray = [];
+    for (let i = 0; i < redDotMatches; i++) {
+      dotsArray.push(<RedDot key={`red-${i}`} />);
+    }
+
+    for (let i = 0; i < yellowDotMatches; i++) {
+      dotsArray.push(<YellowDot key={`yellow-${i}`} />);
+    }
+
+    setDots(dotsArray);
   };
 
   // const checkResult = () => {
@@ -155,7 +172,7 @@ function App() {
       <NewGameButton generateSecretCode={generateSecretCode} />
       <div className="flex mb-5">
         <CodePegBoard selectedSuits={selectedSuits} secretCode={secretCode} />
-        <KeyPegBoard />
+        <KeyPegBoard dots={dots}/>
       </div>
       <SuitButtonsRow pushSuit={pushSuit} />
       <Button text={"CHECK RESULT"} onClick={checkResult} />
