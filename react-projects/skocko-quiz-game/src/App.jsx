@@ -16,11 +16,11 @@ import RedDot from "./components/RedDot";
 import YellowDot from "./components/YellowDot";
 
 function App() {
-  const [secretCode, setSecretCode] = useState([]);
-
   useEffect(() => {
     generateSecretCode();
   }, []);
+
+  const [secretCode, setSecretCode] = useState([]);
 
   function generateSecretCode() {
     const secretCodeElements = [
@@ -35,9 +35,7 @@ function App() {
     while (code.length < 4) {
       const randomIndex = Math.floor(Math.random() * secretCodeElements.length);
       const randomElement = secretCodeElements[randomIndex];
-      if (!code.includes(randomElement)) {
-        code.push(randomElement);
-      }
+      code.push(randomElement);
     }
     setSecretCode(code);
   }
@@ -63,25 +61,6 @@ function App() {
       return prevSelectedSuits;
     });
   }
-  // const checkResult = () => {
-  //   let exactMatches = 0;
-  //   let suitMatches = 0;
-  //   const selectedValues = selectedSuits.map((suit) => suit.props.value);
-  //   const secretValues = secretCode.map((code) => code.props.value);
-
-  //   for (let i = 0; i < 4; i++) {
-  //     if (selectedValues[i] === secretValues[i]) {
-  //       exactMatches++;
-  //       console.log('exact match');
-  //     } else if (secretValues.includes(selectedValues[i])) {
-  //       suitMatches++;
-  //       console.log('suit match');
-  //     }
-  //   }
-
-  //   console.log('Exact Matches:', exactMatches);
-  //   console.log('Suit Matches:', suitMatches);
-  // };
 
   const [dots, setDots] = useState([]);
 
@@ -101,6 +80,7 @@ function App() {
         if (guessArray[i] === answerArray[j]) {
           suitMatches++;
           answerArray.splice(j, 1);
+          break;
         }
       }
     }
@@ -119,22 +99,6 @@ function App() {
 
     setDots(dotsArray);
   };
-
-  // const checkResult = () => {
-  //   let exactMatches = 0;
-  //   let suitMatches = 0;
-  //   const nesto = secretCode.map(item => item.props.value);
-  //   console.log(nesto);
-  //   for (let i = 0; i < 4; i++) {
-  //     if (selectedSuits[i].props.value === secretCode[i].props.value) {
-  //       exactMatches++;
-  //     } else if (nesto.includes(selectedSuits[i].props.value)) {
-  //       suitMatches++;
-  //     }
-  //   }
-  //   const notInTheRightSpotMatches = suitMatches - exactMatches;
-  //   console.log(exactMatches, notInTheRightSpotMatches);
-  // };
 
   // const checkResultDODAJ = () => {
   //   if (selectedSuits === secretCode || numberOfGuesses = 6) {
@@ -172,7 +136,7 @@ function App() {
       <NewGameButton generateSecretCode={generateSecretCode} />
       <div className="flex mb-5">
         <CodePegBoard selectedSuits={selectedSuits} secretCode={secretCode} />
-        <KeyPegBoard dots={dots}/>
+        <KeyPegBoard dots={dots} />
       </div>
       <SuitButtonsRow pushSuit={pushSuit} />
       <Button text={"CHECK RESULT"} onClick={checkResult} />
