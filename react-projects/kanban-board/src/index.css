@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+    @apply p-0 m-0 box-border no-underline
+}
+
+html {
+    @apply h-full
+}
+
+body {
+    @apply h-full 
+}
+
+#root {
+    @apply h-full 
+}

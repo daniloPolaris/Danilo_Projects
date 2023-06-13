@@ -26,6 +26,7 @@ function CreateBoardForm({showCreateBoard, boardData, setBoardData}) {
 
   const handlePreviousStep = () => {
     setStep(step - 1);
+    setErrorMessage("");
   };
 
   const handleAddColumn = () => {
@@ -65,10 +66,10 @@ function CreateBoardForm({showCreateBoard, boardData, setBoardData}) {
 
   return (
     <>
-      <form className="flex flex-col items-center bg-slate-200 rounded-xl shadow-md" onSubmit={handleSubmit}>
+      <form className="flex flex-col items-center bg-slate-300 rounded-xl shadow-md max-w-2xl" onSubmit={handleSubmit}>
         <h3 className="text-xl bg-slate-500 px-52 py-2 text-white rounded-xl mb-6">Create board</h3>
         
-        {errorMessage && <p className="text-red-500 mb-6 bg-white p-4 rounded-md shadow-md">{errorMessage}</p>}
+        {errorMessage && <p className="text-red-500 mb-6 bg-slate-100 p-4 rounded-md shadow-md">{errorMessage}</p>}
 
         {step === 1 && (
           <div>
@@ -82,6 +83,7 @@ function CreateBoardForm({showCreateBoard, boardData, setBoardData}) {
                 maxLength={50}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
+                className="bg-slate-100"
               />
             </div>
 
@@ -95,6 +97,7 @@ function CreateBoardForm({showCreateBoard, boardData, setBoardData}) {
                 maxLength={200}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
+                className="bg-slate-100"
               />
             </div>
 
@@ -109,7 +112,7 @@ function CreateBoardForm({showCreateBoard, boardData, setBoardData}) {
             {columns.map((column, index) => (
               <div key={index}>
                 <input
-                  className="ml-10"
+                  className="ml-10 bg-slate-100"
                   type="text"
                   maxLength={50}
                   value={column.name}
