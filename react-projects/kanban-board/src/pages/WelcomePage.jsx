@@ -21,7 +21,7 @@ function WelcomePage() {
   return (
     <div className="flex flex-col h-full">
       <header className="bg-slate-600">
-        <div className="flex justify-center items-center max-w-5xl mx-auto my-0 py-2 text-white text-2xl font-serif">
+        <div className="flex justify-center items-center max-w-7xl mx-auto my-0 py-2 text-white text-2xl font-serif">
           LOGO
         </div>
       </header>
