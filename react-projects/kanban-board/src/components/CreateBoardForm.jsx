@@ -50,6 +50,7 @@ function CreateBoardForm({showCreateBoard, boardData, setBoardData}) {
     }
     setErrorMessage("");
     const newBoardData = {
+      id: boardData.length + 1,
       title: title,
       description: description,
       columns: columns.map((column) => ({ name: column.name })),

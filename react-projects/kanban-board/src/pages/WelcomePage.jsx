@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import CreateBoardForm from "../components/CreateBoardForm";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Button from "../components/Button";
 
 function WelcomePage() {
@@ -27,19 +27,22 @@ function WelcomePage() {
       </header>
       <div className="flex flex-col justify-center items-center bg-blue-400 flex-grow gap-8">
         {!showCreateBoard && boardData.length > 0 && (
-          <div className="flex flex-row gap-6 overflow-x-scroll max-w-3xl">
+          <div className={`flex flex-row gap-6 ${boardData.length > 3 ? "overflow-x-scroll" : ""} max-w-3xl`}>
             {boardData.map((board, index) => (
-              <div key={index} className="flex flex-col flex-shrink-0 items-center bg-white rounded-xl shadow-md p-4 h-80 w-60 mb-6">
-                <h3 className="text-xl font-bold py-10">{board.title}</h3>
-                <p >{board.description}</p>
-              </div>
+              <Link key={index} to={`/board/${board.id}`}>
+                <div className="flex flex-col flex-shrink-0 items-center bg-white rounded-xl shadow-md p-4 h-80 w-60 mb-6">
+                  <h3 className="text-xl font-bold py-10">{board.title}</h3>
+                  <p>{board.description}</p>
+                </div>
+              </Link>
             ))}
           </div>
         )}
         {!showCreateBoard && <Button buttonText={"CREATE BOARD"} onClick={handleCreateBoardClick} />}
-        {showCreateBoard && <CreateBoardForm showCreateBoard={setShowCreateBoard} boardData={boardData} setBoardData={setBoardData}/>}
+        {showCreateBoard && (
+          <CreateBoardForm showCreateBoard={setShowCreateBoard} boardData={boardData} setBoardData={setBoardData} />
+        )}
       </div>
-      {/* <Link to="/board">Board Page</Link> */}
     </div>
   );
 }

@@ -1,9 +1,12 @@
+import { useParams } from "react-router-dom";
+
 function BoardPage() {
+  const { id } = useParams();
 
   return (
-    <>
-      <p>This is Board Page</p>
-    </>
+    <div>
+      <h1>Board Page - Board ID: {id}</h1>
+    </div>
   );
 }
 
