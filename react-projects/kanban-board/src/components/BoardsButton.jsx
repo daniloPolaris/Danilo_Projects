@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
-const MenuButton = () => {
+function BoardsButton({ boardData, onBoardSelect }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -21,17 +21,27 @@ const MenuButton = () => {
         >
           <path d="M156,128a28,28,0,1,1-28-28A28,28,0,0,1,156,128ZM128,76a28,28,0,1,0-28-28A28,28,0,0,0,128,76Zm0,104a28,28,0,1,0,28,28A28,28,0,0,0,128,180Z"></path>
         </svg>{" "}
-        Menu
+        Boards
       </button>
       {isOpen && (
-        <div className="absolute top-8 right-0 w-48 text-white ">
-          <Link to={`/`} className="py-2 rounded bg-slate-500 flex justify-center my-2" onClick={toggleMenu}>
-            Wlecome page
-          </Link>
+        <div className="absolute top-8 left-0 w-48 text-white ">
+          {boardData.map((board) => (
+            <Link
+              key={board.id}
+              to={`/board/${board.id}`}
+              className="pl-4 py-2 rounded bg-slate-500 flex my-2"
+              onClick={() => {
+                onBoardSelect(board.id);
+                toggleMenu();
+              }}
+            >
+              {board.title}
+            </Link>
+          ))}
         </div>
       )}
     </div>
   );
-};
+}
 
-export default MenuButton;
+export default BoardsButton;

@@ -50,7 +50,7 @@ function CreateBoardForm({showCreateBoard, boardData, setBoardData}) {
     }
     setErrorMessage("");
     const newBoardData = {
-      id: boardData.length + 1,
+      id: boardData.length,
       title: title,
       description: description,
       columns: columns.map((column) => ({ name: column.name })),
@@ -67,8 +67,8 @@ function CreateBoardForm({showCreateBoard, boardData, setBoardData}) {
 
   return (
     <>
-      <form className="flex flex-col items-center bg-slate-200 rounded shadow-md max-w-2xl" onSubmit={handleSubmit}>
-        <h3 className="text-xl bg-slate-500 text-white px-52 py-2 rounded mb-6">Create board</h3>
+      <form className="flex flex-col items-center bg-white rounded-md shadow-md max-w-2xl" onSubmit={handleSubmit}>
+        <h3 className="text-xl  px-52 py-2 mb-6 border-b-2 border-slate-500">Create board</h3>
         
         {errorMessage && <p className="text-red-500 mb-6 bg-white p-4 rounded-md shadow-md">{errorMessage}</p>}
 
@@ -84,7 +84,7 @@ function CreateBoardForm({showCreateBoard, boardData, setBoardData}) {
                 maxLength={50}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="bg-white border-slate-500 border rounded focus:outline-none"
+                className="bg-white border-slate-500 border rounded p-1 focus:outline-none"
               />
             </div>
 
@@ -98,7 +98,7 @@ function CreateBoardForm({showCreateBoard, boardData, setBoardData}) {
                 maxLength={200}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="bg-white border-slate-500 border rounded focus:outline-none"
+                className="bg-white border-slate-500 border rounded p-1 focus:outline-none"
               />
             </div>
 
@@ -113,7 +113,7 @@ function CreateBoardForm({showCreateBoard, boardData, setBoardData}) {
             {columns.map((column, index) => (
               <div key={index}>
                 <input
-                  className="ml-10 bg-white border-slate-500 border rounded focus:outline-none"
+                  className="ml-10 bg-white border-slate-500 border rounded p-1 focus:outline-none"
                   type="text"
                   maxLength={50}
                   value={column.name}
