@@ -11,6 +11,8 @@ function BoardPage() {
   const [colaboratorName, setColaboratorName] = useState("");
   const [colaborators, setColaborators] = useState([]);
 
+  const [selectedColaborator, setSelectedColaborator] = useState(null);
+
   useEffect(() => {
     const storedData = localStorage.getItem("boardData");
     if (storedData) {
@@ -75,15 +77,25 @@ function BoardPage() {
             <div className="text-sm flex">
               {colaborators &&
                 colaborators.map((colaborator, index) => (
-                  <span
-                    className="p-1 bg-sky-400 flex items-center justify-center w-8 h-8 rounded-full mr-1 text-white"
+                  <div
+                    className="relative"
                     key={index}
+                    onMouseEnter={() => setSelectedColaborator(colaborator)}
+                    onMouseLeave={() => setSelectedColaborator(null)}
                   >
-                    {colaborator && colaborator
-                      .split(" ")
-                      .map((name) => name[0].toUpperCase())
-                      .join("")}
-                  </span>
+                    <span className="p-1 bg-sky-400 flex items-center justify-center w-8 h-8 rounded-full mr-1 text-white">
+                      {colaborator &&
+                        colaborator
+                          .split(" ")
+                          .map((name) => name[0].toUpperCase())
+                          .join("")}
+                    </span>
+                    {selectedColaborator === colaborator && (
+                      <span className="absolute top-10 left-1/2 transform -translate-x-1/2 w-max bg-white p-2 text-black rounded-md shadow-md">
+                        {selectedColaborator}
+                      </span>
+                    )}
+                  </div>
                 ))}
             </div>
           </div>

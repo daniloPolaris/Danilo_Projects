@@ -9,7 +9,7 @@ function BoardsButton({ boardData, onBoardSelect }) {
   };
 
   return (
-    <div className="relative">
+    <div className="relative z-10">
       <button className="flex text-lg bg-slate-500 rounded pl-2 pr-4" onClick={toggleMenu}>
         <svg
           className="mt-1"
