@@ -19,7 +19,7 @@ function BoardPage() {
       const url = window.location.href;
       const splitUrl = url.split("/").pop();
       setBoardId(splitUrl);
-      setColaborators(parsedData[splitUrl].colaborators);
+      if (parsedData[splitUrl].colaborators) setColaborators(parsedData[splitUrl].colaborators);
     }
   }, []);
 
@@ -40,22 +40,12 @@ function BoardPage() {
 
   const handleAddColaboratorToList = () => {
     if (colaboratorName.trim() !== "") {
-      setColaborators(prevState => [...prevState, colaboratorName]);
+      setColaborators((prevState) => [...prevState, colaboratorName]);
       setColaboratorName("");
-      console.log('list');
       const updatedBoardData = [...boardData];
-
-      console.log("Board data:",updatedBoardData);
-      // console.log("Updated Board data:",{updatedBoardData});
-      
-      updatedBoardData[boardId].colaborators = colaborators;
-      console.log("colaborators", colaborators);
+      updatedBoardData[boardId].colaborators = [...colaborators, colaboratorName];
       setBoardData(updatedBoardData);
-  
-      console.log("Updated Board data:",updatedBoardData);
-  
       localStorage.setItem("boardData", JSON.stringify(updatedBoardData));
-      console.log('storage');
     }
   };
 
@@ -63,26 +53,12 @@ function BoardPage() {
     const updatedColaborators = [...colaborators];
     updatedColaborators.splice(index, 1);
     setColaborators(updatedColaborators);
-
-  };
-
-  const handleColaboratorsData = () => {
     const updatedBoardData = [...boardData];
-
-    console.log("Board data:",updatedBoardData);
-    // console.log("Updated Board data:",{updatedBoardData});
-    
-    updatedBoardData[boardId].colaborators = colaborators;
-    console.log("colaborators", colaborators);
+    updatedBoardData[boardId].colaborators = [...updatedColaborators];
     setBoardData(updatedBoardData);
-
-    console.log("Updated Board data:",updatedBoardData);
-
     localStorage.setItem("boardData", JSON.stringify(updatedBoardData));
-    console.log('storage');
   };
 
-  console.log(colaborators);
   return (
     <div className="flex flex-col h-full bg-blue-400">
       <header className="bg-slate-600">
@@ -97,14 +73,18 @@ function BoardPage() {
           <div className="flex items-center">
             <span className="text-2xl pb-1 mr-5">{boardData[boardId] && boardData[boardId].title}</span>
             <div className="text-sm flex">
-              {colaborators && colaborators.map((colaborator, index) => (
-                <span className="p-1 bg-sky-400 flex items-center justify-center w-8 h-8 rounded-full mr-1 text-white" key={index}>
-                  {colaborator
-                    .split(" ")
-                    .map((name) => name[0].toUpperCase())
-                    .join("")}
-                </span>
-              ))}
+              {colaborators &&
+                colaborators.map((colaborator, index) => (
+                  <span
+                    className="p-1 bg-sky-400 flex items-center justify-center w-8 h-8 rounded-full mr-1 text-white"
+                    key={index}
+                  >
+                    {colaborator && colaborator
+                      .split(" ")
+                      .map((name) => name[0].toUpperCase())
+                      .join("")}
+                  </span>
+                ))}
             </div>
           </div>
           <div>
@@ -226,7 +206,9 @@ function BoardPage() {
                     <span>{colaborator}</span>
                     <button
                       className="p-1 bg-red-500 text-white rounded"
-                      onClick={() => {handleRemoveColaborator(index); handleColaboratorsData()}}
+                      onClick={() => {
+                        handleRemoveColaborator(index);
+                      }}
                     >
                       Remove
                     </button>
