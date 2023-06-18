@@ -53,7 +53,7 @@ function CreateBoardForm({showCreateBoard, boardData, setBoardData}) {
       id: boardData.length,
       title: title,
       description: description,
-      columns: columns.map((column) => ({ name: column.name, tasks: [] })),
+      columns: columns.map((column, index) => ({ name: column.name, tasks: [], id: index })),
       colaborators: [],
     };
     const updatedBoardData = [...boardData, newBoardData];

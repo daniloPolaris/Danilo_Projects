@@ -184,19 +184,19 @@ function BoardPage() {
         <div className="flex justify-evenly max-w-7xl mx-auto flex-grow gap-1">
           {boardData[boardId] &&
             boardData[boardId].columns &&
-            boardData[boardId].columns.map((column) => (
-              <div className="flex-grow bg-slate-300 rounded shadow-md flex-1">
+            boardData[boardId].columns.map((column, index) => (
+              <div className="flex-grow bg-slate-300 rounded shadow-md flex-1" key={index}>
                 <div className="flex justify-center bg-slate-400 text-slate-800 font-semibold rounded  mb-4 py-2 shadow-md">
                   {column.name}
                 </div>
                 {column.tasks &&
-                  column.tasks.map((task) => (
-                    <div className="bg-white flex justify-between items-center rounded mb-2 py-4 mx-1 shadow-md">
+                  column.tasks.map((task, index) => (
+                    <div className="bg-white flex justify-between items-center rounded mb-2 py-4 mx-1 shadow-md" key={index}>
                       <span className="ml-2">{task.title}</span>
                       <div className="flex justify-end">
                         {task.assignedTo &&
-                          task.assignedTo.map((collaborator) => (
-                            <span className="p-1 bg-sky-400 w-7 h-7 flex justify-center items-center rounded-full mr-1 text-sm text-white">
+                          task.assignedTo.map((collaborator, index) => (
+                            <span className="p-1 bg-sky-400 w-7 h-7 flex justify-center items-center rounded-full mr-1 text-sm text-white" key={index}>
                               {collaborator
                                 .split(" ")
                                 .map((name) => name[0].toUpperCase())
