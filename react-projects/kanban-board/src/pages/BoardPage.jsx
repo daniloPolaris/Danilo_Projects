@@ -4,14 +4,18 @@ import BoardsButton from "../components/BoardsButton";
 import { useState, useEffect } from "react";
 import ColaboratorButton from "../components/ColaboratorButton";
 
+import Button from "../components/Button";
+
 function BoardPage() {
   const [boardData, setBoardData] = useState([]);
   const [boardId, setBoardId] = useState("");
   const [showAddColaborator, setShowAddColaborator] = useState(false);
   const [colaboratorName, setColaboratorName] = useState("");
   const [colaborators, setColaborators] = useState([]);
+  const [hoveredColaborator, setHoveredColaborator] = useState(null);
 
-  const [selectedColaborator, setSelectedColaborator] = useState(null);
+  const [showCreateTask, setShowCreateTask] = useState(false);
+  const [showAssignList, setShowAssignList] = useState(false);
 
   useEffect(() => {
     const storedData = localStorage.getItem("boardData");
@@ -21,7 +25,7 @@ function BoardPage() {
       const url = window.location.href;
       const splitUrl = url.split("/").pop();
       setBoardId(splitUrl);
-      if (parsedData[splitUrl].colaborators) setColaborators(parsedData[splitUrl].colaborators);
+      setColaborators(parsedData[splitUrl].colaborators);
     }
   }, []);
 
@@ -61,6 +65,14 @@ function BoardPage() {
     localStorage.setItem("boardData", JSON.stringify(updatedBoardData));
   };
 
+  const handleCreateTask = () => {
+    setShowCreateTask(!showCreateTask);
+  };
+
+  const handleAssignList = () => {
+    setShowAssignList(!showAssignList);
+  };
+
   return (
     <div className="flex flex-col h-full bg-blue-400">
       <header className="bg-slate-600">
@@ -80,8 +92,8 @@ function BoardPage() {
                   <div
                     className="relative"
                     key={index}
-                    onMouseEnter={() => setSelectedColaborator(colaborator)}
-                    onMouseLeave={() => setSelectedColaborator(null)}
+                    onMouseEnter={() => setHoveredColaborator(colaborator)}
+                    onMouseLeave={() => setHoveredColaborator(null)}
                   >
                     <span className="p-1 bg-sky-400 flex items-center justify-center w-8 h-8 rounded-full mr-1 text-white">
                       {colaborator &&
@@ -90,9 +102,9 @@ function BoardPage() {
                           .map((name) => name[0].toUpperCase())
                           .join("")}
                     </span>
-                    {selectedColaborator === colaborator && (
+                    {hoveredColaborator === colaborator && (
                       <span className="absolute top-10 left-1/2 transform -translate-x-1/2 w-max bg-white p-2 text-black rounded-md shadow-md">
-                        {selectedColaborator}
+                        {hoveredColaborator}
                       </span>
                     )}
                   </div>
@@ -100,7 +112,7 @@ function BoardPage() {
             </div>
           </div>
           <div>
-            <TaskButton />
+            <TaskButton onClick={handleCreateTask} />
             <ColaboratorButton onClick={handleAddColaborator} />
           </div>
         </div>
@@ -193,10 +205,86 @@ function BoardPage() {
           </div>
         </div>
       </div>
+
+      {showCreateTask && (
+        <div className="fixed top-24 left-0 right-0  flex justify-center">
+          <form className="flex flex-col items-center bg-white rounded-md shadow-md max-w-2xl">
+            <h3 className="text-xl  px-52 py-2 mb-6 border-b-2 border-slate-500">Create task</h3>
+
+            {/* {errorMessage && <p className="text-red-500 mb-6 bg-white p-4 rounded-md shadow-md">{errorMessage}</p>} */}
+            <div className="mb-4">
+              <label className="pr-44 text-lg" htmlFor="title">
+                Title:
+              </label>
+              <input
+                type="text"
+                id="title"
+                maxLength={50}
+                // onChange={(e) => setTitle(e.target.value)}
+                className="bg-white border-slate-500 border rounded p-1 focus:outline-none"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="pr-64  text-lg" htmlFor="storyPoints">
+                Story points:
+              </label>
+              <input
+                type="number"
+                id="storyPoints"
+                maxLength={2}
+                // onChange={(e) => setStoryPoints(e.target.value)}
+                className="bg-white w-12 border-slate-500 border rounded p-1 focus:outline-none"
+              />
+            </div>
+            <div className="relative">
+              <div>
+                <Button buttonText={"Assign"} type="button" onClick={handleAssignList} />
+              </div>
+              {showAssignList && (
+                <div className="absolute -left-10 bg-white rounded border-2 border-slate-400 border-rounded px-10 pt-2 shadow-sm">
+                  {colaborators.map((colaborator) => (
+                    <div key={colaborator} className="my-2">
+                      <label className="flex items-center gap-6 ">
+                        <input
+                          className="h-4 w-4"
+                          type="checkbox"
+                          // checked={assignedTo.includes(colaborator)}
+                          // onChange={() => handleCollaboratorCheckboxChange(colaborator)}
+                        />
+                        {colaborator}
+                      </label>
+                    </div>
+                  ))}
+                  <div className="pt-4">
+                    <Button buttonText={"Close"} type="button" onClick={handleAssignList} />
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="mb-10 flex gap-24">
+              <label className="pl-3 pr-3 text-lg" htmlFor="description">
+                Description:
+              </label>
+              <textarea
+                type="text"
+                id="description"
+                maxLength={1000}
+                // onChange={(e) => setDescription(e.target.value)}
+                className="bg-white border-slate-500 border rounded w-48 px-1 mx-3 focus:outline-none"
+              />
+            </div>
+            <div>
+              <Button buttonText={"Close"} type="button" onClick={handleCreateTask} />
+              <Button buttonText={"Save"} />
+            </div>
+          </form>
+        </div>
+      )}
+
       {showAddColaborator && (
         <div className="fixed top-24 left-0 right-0  flex justify-center">
           <div className="bg-white p-4 rounded-md shadow-md flex flex-col">
-            <label htmlFor="colaboratorName" className="mb-3">
+            <label htmlFor="colaboratorName" className="mb-3 text-lg">
               Colaborator Name:
             </label>
             <div className="flex items-center mb-8">
