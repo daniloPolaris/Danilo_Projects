@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import ColaboratorButton from "../components/ColaboratorButton";
 
 import Button from "../components/Button";
+// import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 function BoardPage() {
   const [boardData, setBoardData] = useState([]);
@@ -127,8 +128,6 @@ function BoardPage() {
     setShowCreateTask(false);
   };
 
-
-
   // console.log("title:", title);
   // console.log("storyPoints:", storyPoints);
   // console.log("description:", description);
@@ -180,92 +179,38 @@ function BoardPage() {
         </div>
       </div>
       <div className="flex flex-grow mb-1">
+        {/* <DragDropContext onDragEnd={handleDragEnd}> */}
+
         <div className="flex justify-evenly max-w-7xl mx-auto flex-grow gap-1">
-          <div className="flex-grow bg-slate-300 rounded shadow-md">
-            <div className="flex justify-center bg-slate-400 text-slate-800 font-semibold rounded  mb-4 py-2 shadow-md">
-              TO-DO
-            </div>
-            <div className="bg-white flex justify-between items-center rounded mb-2 py-2 mx-1 shadow-md">
-              <span className="ml-1">Task1</span>
-              <span className="p-1 bg-sky-400 rounded-full mr-1 text-sm text-white">DS</span>
-            </div>
-            <div className="bg-white flex justify-between items-center rounded mb-2 py-2 mx-1 shadow-md">
-              <span className="ml-1">Task1</span>
-              <span className="p-1 bg-sky-400 rounded-full mr-1 text-sm">DS</span>
-            </div>
-            <div className="bg-white flex justify-between items-center rounded mb-2 py-2 mx-1 shadow-md">
-              <span className="ml-1">Task1</span>
-              <span className="p-1 bg-sky-400 rounded-full mr-1 text-sm">DS</span>
-            </div>
-            <div className="bg-white flex justify-between items-center rounded mb-2 py-2 mx-1 shadow-md">
-              <span className="ml-1">Task1</span>
-              <span className="p-1 bg-sky-400 rounded-full mr-1 text-sm">DS</span>
-            </div>
-          </div>
-          <div className="flex-grow bg-slate-300 rounded shadow-md">
-            <div className="flex justify-center bg-slate-400 text-slate-800 font-semibold rounded  mb-4 py-2 shadow-md">
-              TO-DO
-            </div>
-            <div className="bg-white flex justify-between items-center rounded mb-2 py-2 mx-1 shadow-md">
-              <span className="ml-1">Task1</span>
-              <span className="p-1 bg-sky-400 rounded-full mr-1 text-sm">DS</span>
-            </div>
-            <div className="bg-white flex justify-between items-center rounded mb-2 py-2 mx-1 shadow-md">
-              <span className="ml-1">Task1</span>
-              <span className="p-1 bg-sky-400 rounded-full mr-1 text-sm">DS</span>
-            </div>
-            <div className="bg-white flex justify-between items-center rounded mb-2 py-2 mx-1 shadow-md">
-              <span className="ml-1">Task1</span>
-              <span className="p-1 bg-sky-400 rounded-full mr-1 text-sm">DS</span>
-            </div>
-            <div className="bg-white flex justify-between items-center rounded mb-2 py-2 mx-1 shadow-md">
-              <span className="ml-1">Task1</span>
-              <span className="p-1 bg-sky-400 rounded-full mr-1 text-sm">DS</span>
-            </div>
-          </div>
-          <div className="flex-grow bg-slate-300 rounded shadow-md">
-            <div className="flex justify-center bg-slate-400 text-slate-800 font-semibold rounded  mb-4 py-2 shadow-md">
-              TO-DO
-            </div>
-            <div className="bg-white flex justify-between items-center rounded mb-2 py-2 mx-1 shadow-md">
-              <span className="ml-1">Task1</span>
-              <span className="p-1 bg-sky-400 rounded-full mr-1 text-sm">DS</span>
-            </div>
-            <div className="bg-white flex justify-between items-center rounded mb-2 py-2 mx-1 shadow-md">
-              <span className="ml-1">Task1</span>
-              <span className="p-1 bg-sky-400 rounded-full mr-1 text-sm">DS</span>
-            </div>
-            <div className="bg-white flex justify-between items-center rounded mb-2 py-2 mx-1 shadow-md">
-              <span className="ml-1">Task1</span>
-              <span className="p-1 bg-sky-400 rounded-full mr-1 text-sm">DS</span>
-            </div>
-            <div className="bg-white flex justify-between items-center rounded mb-2 py-2 mx-1 shadow-md">
-              <span className="ml-1">Task1</span>
-              <span className="p-1 bg-sky-400 rounded-full mr-1 text-sm">DS</span>
-            </div>
-          </div>
-          <div className="flex-grow bg-slate-300 rounded shadow-md">
-            <div className="flex justify-center bg-slate-400 text-slate-800 font-semibold rounded  mb-4 py-2 shadow-md">
-              TO-DO
-            </div>
-            <div className="bg-white flex justify-between items-center rounded mb-2 py-2 mx-1 shadow-md">
-              <span className="ml-1">Task1</span>
-              <span className="p-1 bg-sky-400 rounded-full mr-1 text-sm">DS</span>
-            </div>
-            <div className="bg-white flex justify-between items-center rounded mb-2 py-2 mx-1 shadow-md">
-              <span className="ml-1">Task1</span>
-              <span className="p-1 bg-sky-400 rounded-full mr-1 text-sm">DS</span>
-            </div>
-            <div className="bg-white flex justify-between items-center rounded mb-2 py-2 mx-1 shadow-md">
-              <span className="ml-1">Task1</span>
-              <span className="p-1 bg-sky-400 rounded-full mr-1 text-sm">DS</span>
-            </div>
-            <div className="bg-white flex justify-between items-center rounded mb-2 py-2 mx-1 shadow-md">
-              <span className="ml-1">Task1</span>
-              <span className="p-1 bg-sky-400 rounded-full mr-1 text-sm">DS</span>
-            </div>
-          </div>
+          {boardData[boardId] &&
+            boardData[boardId].columns &&
+            boardData[boardId].columns.map((column) => (
+              <div className="flex-grow bg-slate-300 rounded shadow-md flex-1">
+                <div className="flex justify-center bg-slate-400 text-slate-800 font-semibold rounded  mb-4 py-2 shadow-md">
+                  {column.name}
+                </div>
+                {column.tasks &&
+                  column.tasks.map((task) => (
+                    <div className="bg-white flex justify-between items-center rounded mb-2 py-4 mx-1 shadow-md">
+                      <span className="ml-2">{task.title}</span>
+                      <div className="flex justify-end">
+                        {task.assignedTo &&
+                          task.assignedTo.map((collaborator) => (
+                            <span className="p-1 bg-sky-400 w-7 h-7 flex justify-center items-center rounded-full mr-1 text-sm text-white">
+                              {collaborator
+                                .split(" ")
+                                .map((name) => name[0].toUpperCase())
+                                .join("")
+                              }
+                            </span>
+                          ))}
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            ))}
         </div>
+        {/* </DragDropContext> */}
       </div>
 
       {showCreateTask && (
