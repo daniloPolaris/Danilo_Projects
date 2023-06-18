@@ -16,6 +16,11 @@ function BoardPage() {
 
   const [showCreateTask, setShowCreateTask] = useState(false);
   const [showAssignList, setShowAssignList] = useState(false);
+  const [title, setTitle] = useState("");
+  const [storyPoints, setStoryPoints] = useState("");
+  const [description, setDescription] = useState("");
+  const [assignedTo, setAssignedTo] = useState([]);
+  const [columns, setColumns] = useState([]);
 
   useEffect(() => {
     const storedData = localStorage.getItem("boardData");
@@ -24,10 +29,20 @@ function BoardPage() {
       setBoardData(parsedData);
       const url = window.location.href;
       const splitUrl = url.split("/").pop();
-      setBoardId(splitUrl);
-      setColaborators(parsedData[splitUrl].colaborators);
+      setBoardId(parseInt(splitUrl));
+      // setColaborators(parsedData[splitUrl].colaborators);
+      // setColumns(parsedData[splitUrl].columns);
+      const board = parsedData[parseInt(splitUrl)];
+      if (board && board.colaborators) {
+        setColaborators(board.colaborators);
+      }
+      if (board && board.columns) {
+        setColumns(board.columns);
+      }
     }
   }, []);
+
+  // console.log("colaborators:", colaborators);
 
   const handleBoardSelect = (boardId) => {
     setBoardId(boardId);
@@ -72,6 +87,53 @@ function BoardPage() {
   const handleAssignList = () => {
     setShowAssignList(!showAssignList);
   };
+
+  const handleColaboratorCheckboxChange = (colaborator) => {
+    if (assignedTo.includes(colaborator)) {
+      setAssignedTo(assignedTo.filter((c) => c !== colaborator));
+    } else {
+      setAssignedTo([...assignedTo, colaborator]);
+    }
+  };
+
+  const handleSaveButtonClick = (event) => {
+    event.preventDefault();
+
+    if (boardData[boardId].columns) {
+      setColumns(boardData[boardId].columns);
+    }
+    // setColumns(boardData[boardId].columns)
+
+    const newTask = {
+      id: columns[0].tasks?.length + 1 || 1,
+      title: title,
+      storyPoints: storyPoints,
+      description: description,
+      assignedTo: assignedTo,
+    };
+    // console.log("boardId",boardId);
+    const updatedColumns = [...columns];
+    updatedColumns[0].tasks.push(newTask);
+    const updatedBoardData = [...boardData];
+    updatedBoardData[boardId].columns = [...updatedColumns];
+    setBoardData(updatedBoardData);
+    localStorage.setItem("boardData", JSON.stringify(updatedBoardData));
+
+    setColumns([]);
+    setTitle("");
+    setStoryPoints("");
+    setDescription("");
+    setAssignedTo([]);
+    setShowCreateTask(false);
+  };
+
+
+
+  // console.log("title:", title);
+  // console.log("storyPoints:", storyPoints);
+  // console.log("description:", description);
+  // console.log("assignedTo:", assignedTo);
+  // console.log("columns:", columns);
 
   return (
     <div className="flex flex-col h-full bg-blue-400">
@@ -208,7 +270,10 @@ function BoardPage() {
 
       {showCreateTask && (
         <div className="fixed top-24 left-0 right-0  flex justify-center">
-          <form className="flex flex-col items-center bg-white rounded-md shadow-md max-w-2xl">
+          <form
+            className="flex flex-col items-center bg-white rounded-md shadow-md max-w-2xl"
+            onSubmit={handleSaveButtonClick}
+          >
             <h3 className="text-xl  px-52 py-2 mb-6 border-b-2 border-slate-500">Create task</h3>
 
             {/* {errorMessage && <p className="text-red-500 mb-6 bg-white p-4 rounded-md shadow-md">{errorMessage}</p>} */}
@@ -220,7 +285,8 @@ function BoardPage() {
                 type="text"
                 id="title"
                 maxLength={50}
-                // onChange={(e) => setTitle(e.target.value)}
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
                 className="bg-white border-slate-500 border rounded p-1 focus:outline-none"
               />
             </div>
@@ -232,7 +298,8 @@ function BoardPage() {
                 type="number"
                 id="storyPoints"
                 maxLength={2}
-                // onChange={(e) => setStoryPoints(e.target.value)}
+                value={storyPoints}
+                onChange={(e) => setStoryPoints(e.target.value)}
                 className="bg-white w-12 border-slate-500 border rounded p-1 focus:outline-none"
               />
             </div>
@@ -240,7 +307,7 @@ function BoardPage() {
               <div>
                 <Button buttonText={"Assign"} type="button" onClick={handleAssignList} />
               </div>
-              {showAssignList && (
+              {showAssignList && colaborators && colaborators.length > 0 && (
                 <div className="absolute -left-10 bg-white rounded border-2 border-slate-400 border-rounded px-10 pt-2 shadow-sm">
                   {colaborators.map((colaborator) => (
                     <div key={colaborator} className="my-2">
@@ -248,8 +315,8 @@ function BoardPage() {
                         <input
                           className="h-4 w-4"
                           type="checkbox"
-                          // checked={assignedTo.includes(colaborator)}
-                          // onChange={() => handleCollaboratorCheckboxChange(colaborator)}
+                          checked={assignedTo.includes(colaborator)}
+                          onChange={() => handleColaboratorCheckboxChange(colaborator)}
                         />
                         {colaborator}
                       </label>
@@ -269,7 +336,8 @@ function BoardPage() {
                 type="text"
                 id="description"
                 maxLength={1000}
-                // onChange={(e) => setDescription(e.target.value)}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 className="bg-white border-slate-500 border rounded w-48 px-1 mx-3 focus:outline-none"
               />
             </div>
@@ -285,7 +353,7 @@ function BoardPage() {
         <div className="fixed top-24 left-0 right-0  flex justify-center">
           <div className="bg-white p-4 rounded-md shadow-md flex flex-col">
             <label htmlFor="colaboratorName" className="mb-3 text-lg">
-              Colaborator Name:
+              Collaborator Name:
             </label>
             <div className="flex items-center mb-8">
               <input
