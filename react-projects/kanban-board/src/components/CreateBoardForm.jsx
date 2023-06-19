@@ -53,7 +53,8 @@ function CreateBoardForm({showCreateBoard, boardData, setBoardData}) {
       id: boardData.length,
       title: title,
       description: description,
-      columns: columns.map((column, index) => ({ name: column.name, tasks: [], id: index })),
+      // columns: columns.map((column, index) => ({ name: column.name, tasks: [], id: index.toString() })),
+      columns: columns.map((column, index) => ({ name: column.name, tasks: [], id: '' + index })),
       colaborators: [],
     };
     const updatedBoardData = [...boardData, newBoardData];
@@ -68,7 +69,7 @@ function CreateBoardForm({showCreateBoard, boardData, setBoardData}) {
 
   return (
     <>
-      <form className="flex flex-col items-center bg-white rounded-md shadow-md max-w-2xl" onSubmit={handleSubmit}>
+      <form className="flex flex-col items-center bg-white rounded-md shadow-md max-w-2xl" onSubmit={handleSubmit} id="createBoardForm">
         <h3 className="text-xl  px-52 py-2 mb-6 border-b-2 border-slate-500">Create board</h3>
         
         {errorMessage && <p className="text-red-500 mb-6 bg-white p-4 rounded-md shadow-md">{errorMessage}</p>}

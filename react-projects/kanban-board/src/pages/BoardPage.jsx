@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import ColaboratorButton from "../components/ColaboratorButton";
 
 import Button from "../components/Button";
-// import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 function BoardPage() {
   const [boardData, setBoardData] = useState([]);
@@ -106,7 +106,7 @@ function BoardPage() {
     // setColumns(boardData[boardId].columns)
 
     const newTask = {
-      id: columns[0].tasks?.length + 1 || 1,
+      id: columns[0]?.tasks?.length + 1 || 1,
       title: title,
       storyPoints: storyPoints,
       description: description,
@@ -114,18 +114,20 @@ function BoardPage() {
     };
     // console.log("boardId",boardId);
     const updatedColumns = [...columns];
-    updatedColumns[0].tasks.push(newTask);
-    const updatedBoardData = [...boardData];
-    updatedBoardData[boardId].columns = [...updatedColumns];
-    setBoardData(updatedBoardData);
-    localStorage.setItem("boardData", JSON.stringify(updatedBoardData));
+    if (updatedColumns[0] && updatedColumns[0].tasks) {
+      updatedColumns[0].tasks.push(newTask);
+      const updatedBoardData = [...boardData];
+      updatedBoardData[boardId].columns = [...updatedColumns];
+      setBoardData(updatedBoardData);
+      localStorage.setItem("boardData", JSON.stringify(updatedBoardData));
 
-    setColumns([]);
-    setTitle("");
-    setStoryPoints("");
-    setDescription("");
-    setAssignedTo([]);
-    setShowCreateTask(false);
+      setColumns([]);
+      setTitle("");
+      setStoryPoints("");
+      setDescription("");
+      setAssignedTo([]);
+      setShowCreateTask(false);
+    }
   };
 
   // console.log("title:", title);
@@ -133,6 +135,51 @@ function BoardPage() {
   // console.log("description:", description);
   // console.log("assignedTo:", assignedTo);
   // console.log("columns:", columns);
+
+  // const handleDragEnd = (result) => {
+  //   const { source, destination } = result;
+
+  //   if (!destination) {
+  //     return;
+  //   }
+
+  //   if (source.droppableId === destination.droppableId && source.index === destination.index) {
+  //     return;
+  //   }
+
+  //   if (boardData[boardId] && boardData[boardId].columns) {
+  //     const updatedColumns = [...boardData[boardId].columns];
+  //     const sourceColumn = updatedColumns[source.droppableId];
+  //     const destinationColumn = updatedColumns[destination.droppableId];
+
+  //     if (sourceColumn && sourceColumn.tasks) {
+  //       const item = sourceColumn.tasks[source.index];
+  //       sourceColumn.tasks.splice(source.index, 1);
+  //       destinationColumn.tasks.splice(destination.index, 0, item);
+
+  //       const updatedBoardData = [...boardData];
+  //       updatedBoardData[boardId].columns = updatedColumns;
+  //       setBoardData(updatedBoardData);
+  //       localStorage.setItem("boardData", JSON.stringify(updatedBoardData));
+  //     }
+  //   }
+  // };
+
+  const handleDragEnd = (result) => {
+    const { source, destination } = result;
+    if (!destination) return;
+
+    const updatedBoardData = [...boardData];
+    const sourceColumnIndex = parseInt(source.droppableId);
+    const destinationColumnIndex = parseInt(destination.droppableId);
+    if (updatedBoardData[boardId].columns[sourceColumnIndex] && updatedBoardData[boardId].columns[sourceColumnIndex].tasks) {
+    const [removed] = updatedBoardData[boardId].columns[sourceColumnIndex].tasks.splice(source.index, 1);
+    updatedBoardData[boardId].columns[destinationColumnIndex].tasks.splice(destination.index, 0, removed);
+
+    setBoardData(updatedBoardData);
+    localStorage.setItem("boardData", JSON.stringify(updatedBoardData));
+    }
+  };
 
   return (
     <div className="flex flex-col h-full bg-blue-400">
@@ -179,38 +226,60 @@ function BoardPage() {
         </div>
       </div>
       <div className="flex flex-grow mb-1">
-        {/* <DragDropContext onDragEnd={handleDragEnd}> */}
-
-        <div className="flex justify-evenly max-w-7xl mx-auto flex-grow gap-1">
-          {boardData[boardId] &&
-            boardData[boardId].columns &&
-            boardData[boardId].columns.map((column, index) => (
-              <div className="flex-grow bg-slate-300 rounded shadow-md flex-1" key={index}>
-                <div className="flex justify-center bg-slate-400 text-slate-800 font-semibold rounded  mb-4 py-2 shadow-md">
-                  {column.name}
-                </div>
-                {column.tasks &&
-                  column.tasks.map((task, index) => (
-                    <div className="bg-white flex justify-between items-center rounded mb-2 py-4 mx-1 shadow-md" key={index}>
-                      <span className="ml-2">{task.title}</span>
-                      <div className="flex justify-end">
-                        {task.assignedTo &&
-                          task.assignedTo.map((collaborator, index) => (
-                            <span className="p-1 bg-sky-400 w-7 h-7 flex justify-center items-center rounded-full mr-1 text-sm text-white" key={index}>
-                              {collaborator
-                                .split(" ")
-                                .map((name) => name[0].toUpperCase())
-                                .join("")
-                              }
-                            </span>
-                          ))}
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <div className="flex justify-evenly max-w-7xl mx-auto flex-grow gap-1">
+            {boardData[boardId] &&
+              boardData[boardId].columns &&
+              boardData[boardId].columns.map((column) => (
+                <Droppable droppableId={column.id} key={column.id}>
+                  {(provided) => (
+                    <div
+                      className="flex-grow bg-slate-300 rounded shadow-md flex-1"
+                      key={column.id}
+                      ref={provided.innerRef}
+                      {...provided.droppableProps}
+                    >
+                      <div className="flex justify-center bg-slate-400 text-slate-800 font-semibold rounded  mb-4 py-2 shadow-md">
+                        {column.name}
                       </div>
+                      {column.tasks &&
+                        column.tasks.map((task, taskIndex) => (
+                          <Draggable draggableId={`${task.id}`} index={taskIndex} key={task.id}>
+                            {(provided) => (
+                              <div
+                                className="bg-white flex justify-between items-center rounded mb-2 py-4 mx-1 shadow-md"
+                                key={task.id}
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                              >
+                                <span className="ml-2">{task.title}</span>
+                                <div className="flex justify-end">
+                                  {task.assignedTo &&
+                                    task.assignedTo.map((collaborator, collaboratorIndex) => (
+                                      <span
+                                        className="p-1 bg-sky-400 w-7 h-7 flex justify-center items-center rounded-full mr-1 text-sm text-white"
+                                        key={collaboratorIndex}
+                                      >
+                                        {collaborator
+                                          .split(" ")
+                                          .map((name) => name[0].toUpperCase())
+                                          .join("")}
+                                      </span>
+                                    ))}
+                                </div>
+                              </div>
+                            )}
+                          </Draggable>
+                        ))}
+
+                      {provided.placeholder}
                     </div>
-                  ))}
-              </div>
-            ))}
-        </div>
-        {/* </DragDropContext> */}
+                  )}
+                </Droppable>
+              ))}
+          </div>
+        </DragDropContext>
       </div>
 
       {showCreateTask && (
@@ -218,6 +287,7 @@ function BoardPage() {
           <form
             className="flex flex-col items-center bg-white rounded-md shadow-md max-w-2xl"
             onSubmit={handleSaveButtonClick}
+            id="createTaskForm"
           >
             <h3 className="text-xl  px-52 py-2 mb-6 border-b-2 border-slate-500">Create task</h3>
 
