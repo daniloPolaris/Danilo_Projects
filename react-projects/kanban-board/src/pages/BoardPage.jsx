@@ -129,56 +129,26 @@ function BoardPage() {
       setShowCreateTask(false);
     }
   };
-
-  // console.log("title:", title);
-  // console.log("storyPoints:", storyPoints);
-  // console.log("description:", description);
-  // console.log("assignedTo:", assignedTo);
-  // console.log("columns:", columns);
-
-  // const handleDragEnd = (result) => {
-  //   const { source, destination } = result;
-
-  //   if (!destination) {
-  //     return;
-  //   }
-
-  //   if (source.droppableId === destination.droppableId && source.index === destination.index) {
-  //     return;
-  //   }
-
-  //   if (boardData[boardId] && boardData[boardId].columns) {
-  //     const updatedColumns = [...boardData[boardId].columns];
-  //     const sourceColumn = updatedColumns[source.droppableId];
-  //     const destinationColumn = updatedColumns[destination.droppableId];
-
-  //     if (sourceColumn && sourceColumn.tasks) {
-  //       const item = sourceColumn.tasks[source.index];
-  //       sourceColumn.tasks.splice(source.index, 1);
-  //       destinationColumn.tasks.splice(destination.index, 0, item);
-
-  //       const updatedBoardData = [...boardData];
-  //       updatedBoardData[boardId].columns = updatedColumns;
-  //       setBoardData(updatedBoardData);
-  //       localStorage.setItem("boardData", JSON.stringify(updatedBoardData));
-  //     }
-  //   }
-  // };
-
+  
   const handleDragEnd = (result) => {
     const { source, destination } = result;
     if (!destination) return;
-
+  
     const updatedBoardData = [...boardData];
     const sourceColumnIndex = parseInt(source.droppableId);
     const destinationColumnIndex = parseInt(destination.droppableId);
-    if (updatedBoardData[boardId].columns[sourceColumnIndex] && updatedBoardData[boardId].columns[sourceColumnIndex].tasks) {
-    const [removed] = updatedBoardData[boardId].columns[sourceColumnIndex].tasks.splice(source.index, 1);
-    updatedBoardData[boardId].columns[destinationColumnIndex].tasks.splice(destination.index, 0, removed);
+    const sourceColumn = updatedBoardData[boardId].columns[sourceColumnIndex];
+    const destinationColumn = updatedBoardData[boardId].columns[destinationColumnIndex];
+  
+    if (sourceColumn && sourceColumn.tasks && sourceColumnIndex !== updatedBoardData[boardId].columns.length - 1) {
 
-    setBoardData(updatedBoardData);
-    localStorage.setItem("boardData", JSON.stringify(updatedBoardData));
+      const [removed] = sourceColumn.tasks.splice(source.index, 1);
+      destinationColumn.tasks.splice(destination.index, 0, removed);
+
+      setBoardData(updatedBoardData);
+      localStorage.setItem("boardData", JSON.stringify(updatedBoardData));
     }
+
   };
 
   return (
